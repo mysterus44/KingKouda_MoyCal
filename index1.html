@@ -271,6 +271,22 @@
     
 
   </script>
+  <script>
+  // Cacher le footer si le clavier mobile est actif
+  const footer = document.querySelector("footer");
+
+  window.addEventListener("resize", () => {
+    // Si la hauteur de la fenêtre diminue brusquement, le clavier est probablement visible
+    const isKeyboardVisible = window.innerHeight < screen.height - 150;
+
+    if (isKeyboardVisible) {
+      footer.style.display = "none";
+    } else {
+      footer.style.display = "block";
+    }
+  });
+</script>
+
   <style>
     footer {
       position: fixed;
