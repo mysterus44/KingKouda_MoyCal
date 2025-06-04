@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title> KingKouda Calculateur de Moyenne de Classe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    header{
+        max-width: 900px;
+        max-height: 140px;
+        margin: auto;
+        background-color: #00f;
+        padding: 5px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: rgba(0,0,0,0.7);
+      padding: 2px;
+      color: #00f;
+    }
+    h1{
+      font-size: 30px;
+      margin-top: -10px;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #fff;
+    }
+    span{
+      font-size: 20px;
+        text-shadow: 2px 2px 2px rgba(15, 14, 14, 0.9);
+        font-weight: bold;
+    }
+    #crea{
+        color: orange;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    #accueil{
+        font-size: 15px;
+        color: #fff;
+        font-weight: bold;
+        background-color: rgb(13, 13, 15);
+        border: 2px solid #fff;
+        border-radius: 10px;
+        width: 200px;
+        text-align: center;
+    }
+    .div-acc{
+      max-width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 0 1px rgba(0,0,0,0.1);
+      display: block;
+      text-align: center;
+      margin: 30px;
+    }
+    input, button, select {
+      padding: 10px;
+      margin: 5px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    button{
+        font-size: 15px;
+        color: #fff;
+        font-weight: bold;
+        background-color: #00f;
+        border: 2px solid #fff;
+        border-radius: 10px;
+    }
+    button:hover{
+        color: #00f;
+        background-color: #fff;
+        border-color: #00f;
+    }
+    .resultat {
+      background-color: #e0f7fa;
+      padding: 20px;
+      border-radius: 10px;
+      white-space: pre-wrap;
+    }
+    
+    a{
+      display: block;
+      color:#fff;
+      font-size: 20px;
+      font-weight: bold;
+      text-decoration: none;
+  }
+  a:hover{
+      color: #00f;
+  }
+  h4{
+    color:#00f;
+    text-decoration: solid #00f;
+    text-transform: uppercase;
+    font-size: 15px;
+    text-shadow:2px 2px 2px #fff;
+  }
+  footer h3{
+      text-align: center;
+      font-size: 15px;
+      color: #fff;
+      text-shadow: 2px 2px 2px #00f;
+      margin: auto;
+      left: 0;
+      width: 100%;
+  }
+  .contact{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding-left: 10px;
+      padding-right: 10px;
+    
+      background-color: #000;
+      text-align: center;
+      border-radius: 20px;
+      max-width: 900px;
+  }
+  #whats{
+      width: 100%;
+    }
+  #whats img{
+      width: 50px;
+      margin-left: 150px;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th, td {
+    border: 1px solid #000;
+    padding: 8px;
+    text-align: left;
+  }
+  .gold {
+    background-color: gold;
+    font-weight: bold;
+  }
+  .silver {
+    background-color: silver;
+    font-weight: bold;
+  }
+  .bronze {
+    background-color: #cd7f32;
+    font-weight: bold;
+  }
+  .admis {
+    color: green;
+  }
+  .redoublant {
+    color: red;
+  }
+  .eleve {
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  </style>
+</head>
+<body>
+    <header>
+        <h1><span>KingKouda<span id="crea">Crea.</span></span></h1>
+        <h1>Calculateur de Moyenne de Classe</h1>
+    </header>
+    <div class="div-acc"><button id="accueil"><a href="index.html">Revenir</a></button></div>
+<div class="container">
+  <div class="section">
+    <label>Nombre d'élèves :</label>
+    <input type="number" id="nbEleves" min="1">
+    <label>Nombre de matières :</label>
+    <input type="number" id="nbMatieres" min="1">
+    <button onclick="etapeNoms()">Suivant</button>
+  </div>
+
+  <div class="section" id="etape2" style="display:none;"></div>
+
+  <div class="section" id="saisieNotes" style="display:none;"></div>
+
+  <div id="resultat" class="resultat" style="display:none;">
+    <h3 style="margin: auto; font-size: 20px; text-align: center; padding: 5px; border:3px solid #00f; width: 80%; font-weight:bold; border-radius: 6px ">Moyennes Et Classements</h3>
+    <pre id="texteResultat"></pre> <!-- zone d’affichage du texte -->
+    <div style="margin-top: 15px;">
+      <button onclick="exporterExcel()">Télécharger (Excel)</button>
+    </div>
+    <div class="div-acc"><button id="accueil"><a href="index2.html">Reprendre</a></button></div>
+  </div>  
+  
+</div>
+
+
+
+<script>
+let eleves = [], matieres = [], notes = {};
+
+function etapeNoms() {
+  const nbEleves = +document.getElementById('nbEleves').value;
+  const nbMatieres = +document.getElementById('nbMatieres').value;
+  if (!nbEleves || !nbMatieres) return alert("Remplis tous les champs correctement.");
+
+  const zone = document.getElementById("etape2");
+  zone.innerHTML = "<h2>Noms des élèves</h2>";
+  for (let i = 0; i < nbEleves; i++) {
+    zone.innerHTML += `<input type="text" placeholder="Élève ${i+1}" id="eleve${i}">`;
+  }
+  zone.innerHTML += `<h2>Noms des matières</h2>`;
+  for (let i = 0; i < nbMatieres; i++) {
+    zone.innerHTML += `<input type="text" placeholder="Matière ${i+1}" id="matiere${i}">`;
+  }
+  zone.innerHTML += `<button onclick="genererChampsNotes()">Valider les noms</button>`;
+  zone.style.display = "block";
+}
+
+function genererChampsNotes() {
+  const nbEleves = +document.getElementById('nbEleves').value;
+  const nbMatieres = +document.getElementById('nbMatieres').value;
+
+  eleves = [], matieres = [];
+  for (let i = 0; i < nbEleves; i++) {
+    const nom = document.getElementById(`eleve${i}`).value.trim();
+    if (!nom) return alert("Tous les noms d'élèves sont requis.");
+    eleves.push(nom);
+  }
+  for (let i = 0; i < nbMatieres; i++) {
+    const nom = document.getElementById(`matiere${i}`).value.trim();
+    if (!nom) return alert("Tous les noms de matières sont requis.");
+    matieres.push(nom);
+  }
+
+  const zone = document.getElementById("saisieNotes");
+  zone.innerHTML = "<h2>Saisie des notes</h2>";
+  notes = {};
+
+  eleves.forEach(eleve => {
+    notes[eleve] = {};
+    matieres.forEach(matiere => {
+      notes[eleve][matiere] = [];
+      zone.innerHTML += `<h3>${eleve} - ${matiere}</h3>`;
+      zone.innerHTML += `<label>Combien de notes ?</label>`;
+      zone.innerHTML += `<input type='number' min='1' id='nbNotes_${eleve}_${matiere}' onchange='afficherSaisieNotes("${eleve}", "${matiere}")'>`;
+      zone.innerHTML += `<div id='notesZone_${eleve}_${matiere}'></div>`;
+    });
+  });
+
+  zone.innerHTML += `<button onclick="calculerMoyennes()">Calculer les moyennes</button>`;
+  zone.style.display = "block";
+}
+
+function afficherSaisieNotes(eleve, matiere) {
+  const nb = +document.getElementById(`nbNotes_${eleve}_${matiere}`).value;
+  const zone = document.getElementById(`notesZone_${eleve}_${matiere}`);
+  zone.innerHTML = "";
+  for (let i = 0; i < nb; i++) {
+    zone.innerHTML += `<input type='number' min='0' max='20' placeholder='Note ${i+1}' id='note_${eleve}_${matiere}_${i}'>`;
+  }
+}
+function partagerResultats() {
+  const texte = document.getElementById("resultText").innerText;
+  if (navigator.share) {
+    navigator
+      .share({
+        title: "Résultats de la classe",
+        text: texte,
+      })
+      .then(() => console.log("Partage réussi"))
+      .catch((error) => console.error("Erreur de partage :", error));
+  } else {
+    alert("La fonction de partage n’est pas disponible sur ce navigateur.");
+  }
+}
+
+function calculerMoyennes() {
+  function calculerMoyennes() {
+    const loading = document.getElementById("loading");
+    loading.style.display = "block"; // ⏳ Affiche le chargement
+  
+    setTimeout(() => { // Petite pause pour que l'animation apparaisse visiblement
+      // ... ton code actuel pour lire les données et générer `output` ...
+  
+      resultat.innerHTML = `
+        <h2 style="text-align:center; color:#00f;">Moyennes Et Classement Général</h2>
+        <pre id="resultText">${output}</pre>
+        <div style="margin-top: 15px;">
+          <button onclick="exportToPDF()">🖨️ Exporter en PDF</button>
+        </div>
+      `;
+  
+      loading.style.display = "block"; // ✅ Masque le chargement
+    }, 100); // Laisse le DOM respirer pour afficher l'animation
+  }
+  
+  const moyennes = {}, classementParMatiere = {}, moyenneGenerale = {};
+  const resultat = document.getElementById("resultat");
+  let sommeClasse = 0;
+  function calculerMoyennes() {
+    const loading = document.getElementById("loading");
+    loading.style.display = "block"; // ⏳ Affiche le chargement
+  
+    setTimeout(() => { // Petite pause pour que l'animation apparaisse visiblement
+      // ... ton code actuel pour lire les données et générer `output` ...
+  
+      resultat.innerHTML = `
+        <h2 style="text-align:center; color:#00f;">Moyennes Et Classement Général</h2>
+        <pre id="resultText">${output}</pre>
+        <div style="margin-top: 15px;">
+          <button onclick="exportToPDF()">🖨️ Exporter en PDF</button>
+          <button onclick="partagerResultats()">📤 Partager</button>
+        </div>
+      `;
+  
+      loading.style.display = "none"; // ✅ Masque le chargement
+    }, 100); // Laisse le DOM respirer pour afficher l'animation
+  }
+  
+
+  // Moyennes par élève et matière
+  eleves.forEach(eleve => {
+    moyennes[eleve] = {};
+    let totalGeneral = 0;
+    matieres.forEach(matiere => {
+      const nb = +document.getElementById(`nbNotes_${eleve}_${matiere}`).value;
+      let total = 0;
+      for (let i = 0; i < nb; i++) {
+        const val = parseFloat(document.getElementById(`note_${eleve}_${matiere}_${i}`).value);
+        if (isNaN(val)) return alert(`Note manquante pour ${eleve} en ${matiere}`);
+        total += val;
+      }
+      const moyenne = total / nb;
+      notes[eleve][matiere] = moyenne;
+      moyennes[eleve][matiere] = moyenne;
+      totalGeneral += moyenne;
+    });
+    moyenneGenerale[eleve] = totalGeneral / matieres.length;
+    sommeClasse += moyenneGenerale[eleve];
+  });
+
+  // Classements par matière
+  matieres.forEach(matiere => {
+    const classement = eleves.map(e => ({ eleve: e, moy: moyennes[e][matiere] }))
+                            .sort((a,b) => b.moy - a.moy)
+                            .map((e, i) => ({...e, rang: i+1}));
+    classementParMatiere[matiere] = classement;
+  });
+
+  // Classement général
+  const classementGeneral = eleves.map(e => ({ eleve: e, moy: moyenneGenerale[e] }))
+                                  .sort((a,b) => b.moy - a.moy)
+                                  .map((e, i) => ({...e, rang: i+1}));
+
+/*affichage
+let output = "";
+eleves.forEach(eleve => {
+  const rangGen = classementGeneral.find(e => e.eleve === eleve).rang;
+  const moyGen = moyenneGenerale[eleve];
+
+  // Couleur selon le rang
+  let couleur = "";
+  if (rangGen === 1) couleur = "gold";
+  else if (rangGen === 2) couleur = "silver"; // Bronze
+  else if (rangGen === 3) couleur = "sienna";
+  else if (moyGen < 10) couleur = "red"; // Redoublant
+  else couleur = "green"; // Admis
+
+  // Médaille
+  let medaille = "";
+  if (rangGen === 1) medaille = " 🥇";
+  else if (rangGen === 2) medaille = " 🥈";
+  else if (rangGen === 3) medaille = " 🥉";
+
+  // Nom de l'élève en gras et majuscules
+  output += `<div style="color: ${couleur}; font-weight: bold; text-transform: uppercase; margin-top: 10px;">${eleve}</div>`;
+
+  matieres.forEach(matiere => {
+    const rang = classementParMatiere[matiere].find(e => e.eleve === eleve).rang;
+    const moyenne = moyennes[eleve][matiere].toFixed(2);
+    output += `<div style="margin-left: 20px;">${matiere} : ${moyenne} (Rang: ${rang})</div>`;
+  });
+
+  output += `<div style="margin-left: 20px;">Moyenne Générale : ${moyGen.toFixed(2)} (Rang: ${rangGen})${medaille}</div><br>`;
+});
+
+output += `<div style="margin-top:20px; font-weight: bold;">Moyenne de la classe : ${(sommeClasse / eleves.length).toFixed(2)}</div>`;
+
+document.getElementById("texteResultat").innerHTML = output;
+resultat.style.display = "block";
+}*/
+let output = `
+  <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; text-align: center;">
+    <thead style="background-color: #f0f0f0;">
+      <tr>
+        <th>ÉLÈVE</th>
+`;
+
+matieres.forEach(matiere => {
+  output += `<th>${matiere} (Moy)</th><th>${matiere} (Rang)</th>`;
+});
+
+output += `
+        <th>Moyenne Générale</th>
+        <th>Rang Général</th>
+        <th>Médaille</th>
+      </tr>
+    </thead>
+    <tbody>
+`;
+
+eleves.forEach(eleve => {
+  const rangGen = classementGeneral.find(e => e.eleve === eleve).rang;
+  const moyGen = moyenneGenerale[eleve].toFixed(2);
+
+  // Couleur selon rang ou moyenne
+  let couleur = "";
+  if (rangGen === 1) couleur = "gold";
+  else if (rangGen === 2) couleur = "sienna";
+  else if (rangGen === 3) couleur = "silver";
+  else if (moyGen < 10) couleur = "red";
+  else couleur = "green";
+
+  // Médaille
+  let medaille = "";
+  if (rangGen === 1) medaille = "🥇 Or";
+  else if (rangGen === 2) medaille = "🥈 Argent";
+  else if (rangGen === 3) medaille = "🥉 Bronze";
+  else if (rangGen > 3 && moyGen >= 10) medaille = "✅";
+  else medaille = "❌"; 
+
+  output += `<tr style="color: ${couleur}; font-weight: bold;">`;
+  output += `<td style="text-transform: uppercase;">${eleve}</td>`;
+
+  matieres.forEach(matiere => {
+    const note = moyennes[eleve][matiere].toFixed(2);
+    const rang = classementParMatiere[matiere].find(e => e.eleve === eleve).rang;
+    output += `<td>${note}</td><td>${rang}</td>`;
+  });
+
+  output += `<td>${moyGen}</td><td>${rangGen}</td><td>${medaille}</td></tr>`;
+});
+
+output += `
+    </tbody>
+  </table>
+  <div style="margin-top: 20px; font-weight: bold;">Moyenne de la classe : ${(sommeClasse / eleves.length).toFixed(2)}</div>
+`;
+
+document.getElementById("texteResultat").innerHTML = output;
+resultat.style.display = "block";
+}
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+  
+</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+  
+  
+  // Fonction pour exporter en Excel
+  function exporterExcel() {
+    const table = document.querySelector('table');
+    const html = table.outerHTML;
+    const url = 'data:application/vnd.ms-excel,' + encodeURIComponent(html);
+    const lien = document.createElement('a');
+    lien.href = url;
+    lien.download = 'resultats.xls';
+    document.body.appendChild(lien);
+    lien.click();
+    document.body.removeChild(lien);
+  }
+  
+</script>
+
+<style>
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%; /* tu peux changer la couleur si besoin */
+    z-index: 1000;
+    text-align: center;
+    
+  }
+
+  .container2 {
+    max-width: 900px;
+    max-height: 120px;
+    margin: auto;
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+
+  body {
+    padding-bottom: 120px; /* Pour éviter que le contenu ne soit caché derrière le footer */
+  }
+</style>
+
+<footer> 
+  <div class="container2">
+    <div class="contact">
+      <h3>L'infini Détermine Mon Potentiel</h3>
+      <a id="whats" href="http://wa.me/2250586037221" target="_blank" rel="noopener noreferrer"><img src="whats.png" alt=""></a>
+    </div>
+    <div style="opacity: 0.5; margin: 20px 0;">
+      <span id="copyright"></span>
+    
+      <script>
+        const year = new Date().getFullYear();
+        document.getElementById("copyright").innerHTML = `© ${year} KingKoudaCrea. Tous droits réservés.`;
+      </script>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

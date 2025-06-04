@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title> KingKouda Calculateur de Moyenne de Classe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    header{
+        max-width: 900px;
+        max-height: 140px;
+        margin: auto;
+        background-color: #00f;
+        padding: 5px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: rgba(0,0,0,0.7);
+      padding: 2px;
+      color: #00f;
+    }
+    h1{
+      font-size: 30px;
+      margin-top: -10px;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #fff;
+    }
+    span{
+      font-size: 20px;
+        text-shadow: 2px 2px 2px rgba(15, 14, 14, 0.9);
+        font-weight: bold;
+    }
+    #crea{
+        color: orange;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+  h2 {
+    text-align: center;
+    color: #00f;
+
+  }
+  span{
+    font-size: 20px;
+      text-shadow: 2px 2px 2px rgba(15, 14, 14, 0.9);
+      font-weight: bold;
+  }
+  #crea{
+      color: orange;
+  }
+  
+  .container {
+    max-width: 900px;
+    margin: auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+  }
+    input, button, select {
+      padding: 10px;
+      margin: 5px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    button{
+        font-size: 15px;
+        color: #fff;
+        font-weight: bold;
+        background-color: #00f;
+        border: 2px solid #fff;
+        border-radius: 10px;
+    }
+    button:hover{
+        background-color: #fff;
+        border-color: #00f;
+    }
+    a{
+      display: block;
+      color:#fff;
+      font-size: 20px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    a:hover{
+      color: #00f;
+    }
+    
+    footer h3{
+      text-align: center;
+      font-size: 15px;
+      color: #fff;
+      text-shadow: 2px 2px 2px #00f;
+      margin: auto;
+      left: 0;
+      width: 100%;
+    }
+    .contact{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding-left: 10px;
+      padding-right: 10px;
+    
+      background-color: #000;
+      text-align: center;
+      border-radius: 20px;
+      max-width: 900px;
+  }
+  #whats{
+      width: 100%;
+    }
+  #whats img{
+      width: 50px;
+      margin-left: 150px;
+  }
+    
+  </style>
+</head>
+<body>
+  <header>
+    <h1><span>KingKouda<span id="crea">Crea.</span></span></h1>
+    <h1>Calculateur de Moyenne de Classe</h1>
+</header>
+    <div class="container">
+        <div>
+        <h2>Choisissez une option </h2>
+        </div>
+        <div>
+        <button><a href="index1.html">Calculer Ma Moyenne</a></button>
+        <button><a href="index2.html">Calculer La Moyenne De Toute La classe</a></button>
+        </div>
+    </div>
+    <style>
+      footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%; /* tu peux changer la couleur si besoin */
+        z-index: 1000;
+        text-align: center;
+        
+      }
+    
+      .container2 {
+        max-width: 900px;
+        max-height: 120px;
+        margin: auto;
+        background-color: #fff;
+        padding: 5px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      }
+    
+      body {
+        padding-bottom: 120px; /* Pour éviter que le contenu ne soit caché derrière le footer */
+      }
+    </style>
+    
+    <footer> 
+      <div class="container2">
+        <div class="contact">
+          <h3>L'infini Détermine Mon Potentiel</h3>
+          <a id="whats" href="http://wa.me/2250586037221" target="_blank" rel="noopener noreferrer"><img src="whats.png" alt=""></a>
+        </div>
+        <div style="opacity: 0.5; margin: 20px 0;">
+          <span id="copyright"></span>
+        
+          <script>
+            const year = new Date().getFullYear();
+            document.getElementById("copyright").innerHTML = `© ${year} KingKoudaCrea. Tous droits réservés.`;
+          </script>
+        </div>
+      </div>
+    </footer>
+</body>
+</html>
