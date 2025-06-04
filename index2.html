@@ -2,13 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-  <meta name="theme-color" content="#00f" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Codystar:wght@300;400&family=Crete+Round:ital@0;1&family=Lora:ital,wght@0,400..700;1,400..700&family=Manrope:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Orbitron:wght@400..900&family=Overpass:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rowdies:wght@300;400;700&display=swap" rel="stylesheet">
-  <title>KingKouda Calculateur de Moyenne de Classe</title>
+  <title> KingKouda Calculateur de Moyenne de Classe</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     header{
@@ -51,6 +45,7 @@
       font-size:15px;
       padding:8px;
     }
+    
     .container {
       max-width: 900px;
       margin: auto;
@@ -69,11 +64,6 @@
         border-radius: 10px;
         width: 200px;
         text-align: center;
-    }
-    #copyright{
-      color: rgba(0,0,0,0.7);
-      text-shadow: none;
-      font-size: 15px;
     }
     .div-acc{
       max-width: 100%;
@@ -223,6 +213,36 @@
 
 
 <script>
+    // Auto-ajout de la classe .note à chaque input[type=number]
+    const observer = new MutationObserver(() => {
+      document.querySelectorAll("input").forEach(input => {
+        if (!input.classList.contains("note")) {
+          input.classList.add("note");
+        }
+      });
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+    
+    // Navigation avec Entrée
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        const inputs = Array.from(document.querySelectorAll("input.note"));
+        const current = document.activeElement;
+        const index = inputs.indexOf(current);
+        if (index !== -1) {
+          event.preventDefault(); // évite le submit accidentel
+          const nextInput = inputs[index + 1];
+          if (nextInput) {
+            nextInput.focus();
+            nextInput.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }
+      }
+    });
+    
+    
+  
+  
 let eleves = [], matieres = [], notes = {};
 
 function etapeNoms() {
@@ -286,6 +306,20 @@ function afficherSaisieNotes(eleve, matiere) {
     zone.innerHTML += `<input type='number' min='0' max='20' placeholder='Note ${i+1}' id='note_${eleve}_${matiere}_${i}'>`;
   }
 }
+function partagerResultats() {
+  const texte = document.getElementById("resultText").innerText;
+  if (navigator.share) {
+    navigator
+      .share({
+        title: "Résultats de la classe",
+        text: texte,
+      })
+      .then(() => console.log("Partage réussi"))
+      .catch((error) => console.error("Erreur de partage :", error));
+  } else {
+    alert("La fonction de partage n’est pas disponible sur ce navigateur.");
+  }
+}
 
 function calculerMoyennes() {
   function calculerMoyennes() {
@@ -329,49 +363,7 @@ function calculerMoyennes() {
       loading.style.display = "none"; // ✅ Masque le chargement
     }, 100); // Laisse le DOM respirer pour afficher l'animation
   }
-  noteInput.className = "note";
-  document.addEventListener("keydown", function(event) {
-  if (event.key === "Enter") {
-    const inputs = Array.from(document.querySelectorAll("input.note"));
-    const currentIndex = inputs.indexOf(document.activeElement);
-    if (currentIndex !== -1 && currentIndex < inputs.length - 1) {
-      event.preventDefault();
-      const nextInput = inputs[currentIndex + 1];
-      nextInput.focus();
-      nextInput.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  }
-});
-
-// Auto-ajout de la classe .note à chaque input[type=number]
-const observer = new MutationObserver(() => {
-  document.querySelectorAll("input").forEach(input => {
-    if (!input.classList.contains("note")) {
-      input.classList.add("note");
-    }
-  });
-});
-observer.observe(document.body, { childList: true, subtree: true });
-
-// Navigation avec Entrée
-document.addEventListener("keydown", function(event) {
-  if (event.key === "Enter") {
-    const inputs = Array.from(document.querySelectorAll("input.note"));
-    const current = document.activeElement;
-    const index = inputs.indexOf(current);
-    if (index !== -1) {
-      event.preventDefault(); // évite le submit accidentel
-      const nextInput = inputs[index + 1];
-      if (nextInput) {
-        nextInput.focus();
-        nextInput.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    }
-  }
-});
-
-
-
+  
 
   // Moyennes par élève et matière
   eleves.forEach(eleve => {
@@ -528,21 +520,6 @@ resultat.style.display = "block";
     document.body.removeChild(lien);
   }
   
-</script>
-<script>
-  // Cacher le footer si le clavier mobile est actif
-  const footer = document.querySelector("footer");
-
-  window.addEventListener("resize", () => {
-    // Si la hauteur de la fenêtre diminue brusquement, le clavier est probablement visible
-    const isKeyboardVisible = window.innerHeight < screen.height - 150;
-
-    if (isKeyboardVisible) {
-      footer.style.display = "none";
-    } else {
-      footer.style.display = "block";
-    }
-  });
 </script>
 
 <style>
