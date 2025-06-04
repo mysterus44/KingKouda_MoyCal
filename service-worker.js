@@ -4,10 +4,12 @@ const urlsToCache = [
   "/index.html",
   "/index1.html",
   "/index2.html",
-  "/icons/icon-192.png",
-  "/icons/icon-512.png",
+  "/icon-192.png",
+  "/icon-512.png",
   "/whats.png",
   "/manifest.json",
+  "/logo.png",
+  "/Kingkouda Cal,aab",
   // Ajoute ici tout autre fichier JS, CSS, image, etc.
 ];
 
