@@ -4,7 +4,7 @@
   "description": "Application pour calculer la moyenne générale scolaire.",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "000000b3",
+  "background_color": "#000000b3",
   "theme_color": "#00f",
   "icons": [
     {
