@@ -183,8 +183,34 @@
   </div>
 
   <script>
-    
+// Auto-ajout de la classe .note à chaque input[type=number]
+const observer = new MutationObserver(() => {
+  document.querySelectorAll("input[type='number']").forEach(input => {
+    if (!input.classList.contains("note")) {
+      input.classList.add("note");
+    }
+  });
+});
+observer.observe(document.body, { childList: true, subtree: true });
 
+// Navigation avec Entrée
+document.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    const inputs = Array.from(document.querySelectorAll("input.note"));
+    const current = document.activeElement;
+    const index = inputs.indexOf(current);
+    if (index !== -1) {
+      event.preventDefault(); // évite le submit accidentel
+      const nextInput = inputs[index + 1];
+      if (nextInput) {
+        nextInput.focus();
+        nextInput.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  }
+});
+  
+  
     function genererMatieres() {
       const nbMatieres = parseInt(document.getElementById("nbMatieres").value);
       const zones = document.getElementById("zonesMatieres");
