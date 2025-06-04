@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-  <meta name="theme-color" content="#00f" />
+  <meta name="theme-color" content="#0077cc" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Codystar:wght@300;400&family=Crete+Round:ital@0;1&family=Lora:ital,wght@0,400..700;1,400..700&family=Manrope:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Orbitron:wght@400..900&family=Overpass:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rowdies:wght@300;400;700&display=swap" rel="stylesheet">
-  <title>KingKouda Calculateur de Moyenne de Classe</title>
+  <title>Calculateur de Moyenne</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     header{
@@ -32,10 +32,11 @@
   h1{
     font-size: 30px;
     margin-top: -10px;
-  }
-  h1, h2 {
     text-align: center;
-    color: #fff;
+  }
+  h2 {
+    text-align: center;
+    color: #00f;
   }
   span{
     font-size: 20px;
@@ -64,11 +65,6 @@
         border-radius: 10px;
         width: 200px;
         text-align: center;
-    }
-    #copyright{
-      color: rgba(0,0,0,0.7);
-      text-shadow: none;
-      font-size: 15px;
     }
     .div-acc{
       max-width: 100%;
@@ -170,12 +166,13 @@
     <div id="etape1">
       <label for="nbMatieres">Nombre de matières :</label>
       <input type="number" id="nbMatieres" min="1" />
-      <button onclick="genererMatieres()">Suivant</button>
+      <button onclick="afficherChampsNomsMatieres()">Suivant</button>
+
     </div>
 
     <form id="formulaireNotes" style="display:none;">
       <div id="zonesMatieres"></div>
-      <button type="button" onclick="calculerMoyennes()">Calculer la moyenne</button>
+    
     </form>
 
     <div id="resultat" class="resultat" style="display:none;">
@@ -183,89 +180,114 @@
   </div>
 
   <script>
-// Auto-ajout de la classe .note à chaque input[type=number]
-const observer = new MutationObserver(() => {
-  document.querySelectorAll("input[type='number']").forEach(input => {
-    if (!input.classList.contains("note")) {
-      input.classList.add("note");
-    }
-  });
-});
-observer.observe(document.body, { childList: true, subtree: true });
-
-// Navigation avec Entrée
-document.addEventListener("keydown", function(event) {
-  if (event.key === "Enter") {
-    const inputs = Array.from(document.querySelectorAll("input.note"));
-    const current = document.activeElement;
-    const index = inputs.indexOf(current);
-    if (index !== -1) {
-      event.preventDefault(); // évite le submit accidentel
-      const nextInput = inputs[index + 1];
-      if (nextInput) {
-        nextInput.focus();
-        nextInput.scrollIntoView({ behavior: "smooth", block: "center" });
+    let nomsMatieres = [];
+  
+    // Ajout classe "note" dynamiquement
+    const observer = new MutationObserver(() => {
+      document.querySelectorAll("input").forEach(input => {
+        if (!input.classList.contains("note")) {
+          input.classList.add("note");
+        }
+      });
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  
+    // Navigation avec Entrée
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        const inputs = Array.from(document.querySelectorAll("input.note"));
+        const current = document.activeElement;
+        const index = inputs.indexOf(current);
+        if (index !== -1) {
+          event.preventDefault();
+          const nextInput = inputs[index + 1];
+          if (nextInput) {
+            nextInput.focus();
+            nextInput.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }
       }
-    }
-  }
-});
+    });
   
-  
-    function genererMatieres() {
+    function afficherChampsNomsMatieres() {
       const nbMatieres = parseInt(document.getElementById("nbMatieres").value);
       const zones = document.getElementById("zonesMatieres");
       zones.innerHTML = '';
-      if (!nbMatieres || nbMatieres < 1) return alert("Entrez un nombre valide de matières.");
-
-      for (let i = 1; i <= nbMatieres; i++) {
-        const div = document.createElement("div");
-        div.className = "matiere";
-        div.innerHTML = `
-          <label>Matière ${i} - nombre de notes :</label>
-          <input type="number" min="1" onchange="genererNotes(this, ${i})" id="notesMatiere${i}" />
-          <div id="zoneNotes${i}" class="zone-notes"></div>
-        `;
-        zones.appendChild(div);
+      nomsMatieres = [];
+  
+      if (!nbMatieres || nbMatieres < 1) {
+        return alert("Entrez un nombre valide de matières.");
       }
-
+  
+      zones.innerHTML += `<h2>Entrez le nom des ${nbMatieres} matières :</h2>`;
+      for (let i = 1; i <= nbMatieres; i++) {
+        zones.innerHTML += `
+          <div class="matiere">
+            <label for="nomMatiere${i}">Matière ${i} :</label>
+            <input type="text" id="nomMatiere${i}" class="note" placeholder="Ex: Math, Physique..." />
+          </div>`;
+      }
+  
+      zones.innerHTML += `<button type="button" onclick="genererChampsNotes()">Valider les noms de matières</button>`;
       document.getElementById("formulaireNotes").style.display = "block";
     }
-
+  
+    function genererChampsNotes() {
+      const nbMatieres = parseInt(document.getElementById("nbMatieres").value);
+      const zones = document.getElementById("zonesMatieres");
+    
+      const tempNoms = [];
+      for (let i = 1; i <= nbMatieres; i++) {
+        const nom = document.getElementById(`nomMatiere${i}`)?.value.trim();
+        if (!nom) return alert(`Veuillez entrer le nom de la matière ${i}.`);
+        tempNoms.push(nom);
+      }
+      nomsMatieres = tempNoms;
+    
+      zones.innerHTML = ''; // 👉 maintenant on peut vider en toute sécurité
+    
+      nomsMatieres.forEach((nom, index) => {
+        zones.innerHTML += `
+          <div class="matiere">
+            <label>${nom} - nombre de notes :</label>
+            <input type="number" min="1" class="note" onchange="genererNotes(this, ${index})" id="notesMatiere${index}" />
+            <div id="zoneNotes${index}" class="zone-notes"></div>
+          </div>`;
+      });
+    
+      zones.innerHTML += `<button type="button" onclick="calculerMoyennes()">Calculer la moyenne</button>`;
+    }
+    
+  
     function genererNotes(input, matiereIndex) {
       const nbNotes = parseInt(input.value);
+      const nomMatiere = nomsMatieres[matiereIndex];
       const zone = document.getElementById(`zoneNotes${matiereIndex}`);
       zone.innerHTML = '';
-
+  
       if (!nbNotes || nbNotes < 1) return;
-
+  
       for (let i = 1; i <= nbNotes; i++) {
         const noteInput = document.createElement("input");
         noteInput.type = "number";
         noteInput.min = "0";
         noteInput.max = "20";
-        noteInput.placeholder = `Note ${i}`;
+        noteInput.placeholder = `${nomMatiere} - Note ${i}`;
         noteInput.className = "note";
         zone.appendChild(noteInput);
       }
     }
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('service-worker.js')
-          .then(reg => console.log("Service Worker enregistré avec succès :", reg))
-          .catch(err => console.error("Erreur d'enregistrement du SW :", err));
-      });
-    }
-    
+  
     function calculerMoyennes() {
-      const nbMatieres = parseInt(document.getElementById("nbMatieres").value);
+      const nbMatieres = nomsMatieres.length;
       let sommeMoyennes = 0;
       let resultatHTML = "";
-
-      for (let i = 1; i <= nbMatieres; i++) {
+  
+      for (let i = 0; i < nbMatieres; i++) {
         const noteInputs = document.querySelectorAll(`#zoneNotes${i} input`);
         let total = 0;
         let nb = 0;
-
+  
         noteInputs.forEach(input => {
           const val = parseFloat(input.value);
           if (!isNaN(val)) {
@@ -273,46 +295,41 @@ document.addEventListener("keydown", function(event) {
             nb++;
           }
         });
-
+  
         if (nb === 0) {
-          alert(`Vous devez entrer au moins une note pour la matière ${i}.`);
+          alert(`Vous devez entrer au moins une note pour la matière ${nomsMatieres[i]}.`);
           return;
         }
-
+  
         const moyenne = total / nb;
         sommeMoyennes += moyenne;
-        resultatHTML += `Matière ${i} : ${moyenne.toFixed(2)}<br>`;
+        resultatHTML += `${nomsMatieres[i]} : ${moyenne.toFixed(2)}<br>`;
       }
-
+  
       const moyenneGenerale = sommeMoyennes / nbMatieres;
       resultatHTML += `<hr><strong>Moyenne Générale :</strong> ${moyenneGenerale.toFixed(2)}`;
+  
       const zoneResultat = document.getElementById("resultat");
       zoneResultat.innerHTML = resultatHTML;
       zoneResultat.style.display = "block";
+  
+      if (moyenneGenerale < 10) {
+        alert("En dessous de la moyenne.");
+      } else {
+        alert("Bravo !!! Vous avez la moyenne !");
+      }
     }
-    
-    if (moyenneGenerale<10) {
-      alert('')
+  
+    // Enregistrement SW
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(reg => console.log("Service Worker enregistré avec succès :", reg))
+          .catch(err => console.error("Erreur d'enregistrement du SW :", err));
+      });
     }
-    
-
   </script>
-  <script>
-  // Cacher le footer si le clavier mobile est actif
-  const footer = document.querySelector("footer");
-
-  window.addEventListener("resize", () => {
-    // Si la hauteur de la fenêtre diminue brusquement, le clavier est probablement visible
-    const isKeyboardVisible = window.innerHeight < screen.height - 150;
-
-    if (isKeyboardVisible) {
-      footer.style.display = "none";
-    } else {
-      footer.style.display = "block";
-    }
-  });
-</script>
-
+  
   <style>
     footer {
       position: fixed;
