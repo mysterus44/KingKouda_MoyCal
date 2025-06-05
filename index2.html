@@ -557,7 +557,22 @@ resultat.style.display = "block";
   document.getElementById("texteResultat").parentElement.style.width = "100%";
   resultat.style.display = "block";
   
-  
+  const footer = document.querySelector("footer");
+  let windowHeight = window.innerHeight;
+
+  window.addEventListener("resize", () => {
+    const newHeight = window.innerHeight;
+
+    // Si la nouvelle hauteur est significativement plus petite => clavier probablement ouvert
+    if (newHeight < windowHeight - 150) {
+      footer.style.display = "none";
+    } else {
+      footer.style.display = "block";
+    }
+
+    // Mets à jour la hauteur de référence
+    windowHeight = newHeight;
+});
 </script>
 
 <style>
