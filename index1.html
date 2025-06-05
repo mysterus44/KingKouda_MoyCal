@@ -22,7 +22,12 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       margin-bottom: 20px;
   }
-
+  #copyright{
+    /*color: rgba(0,0,0,0.7);*/
+    color: #474747;
+    text-shadow: none;
+    font-size: 15px;
+  }
   body {
     font-family: Arial, sans-serif;
     background-color: rgba(0,0,0,0.7);
@@ -35,13 +40,12 @@
     text-align: center;
     color: #fff;
   }
-
   h2 {
     text-align: center;
     color: #00f;
   }
   span{
-    font-size: 20px;
+    font-size: 15px;
       text-shadow: 2px 2px 2px rgba(15, 14, 14, 0.9);
       font-weight: bold;
   }
@@ -49,9 +53,10 @@
       color: orange;
   }
   .titre{
-      font-size:15px;
-      padding:8px;
-    }
+    font-size:15px;
+    padding:8px;
+  }
+  
   .container {
     max-width: 900px;
     margin: auto;
@@ -62,14 +67,14 @@
     margin-bottom: 30px;
   }
     #accueil{
-        font-size: 15px;
-        color: #fff;
-        font-weight: bold;
-        background-color: rgb(13, 13, 15);
-        border: 2px solid #fff;
-        border-radius: 10px;
-        width: 200px;
-        text-align: center;
+      font-size: 15px;
+      color: #fff;
+      font-weight: bold;
+      background-color: orange;
+      border: 2px solid #fff;
+      border-radius: 10px;
+      width: 150px;
+      text-align: center;
     }
     .div-acc{
       max-width: 100%;
@@ -138,11 +143,6 @@
   .reprendre a{
     color: #00f;
   }
-  #copyright{
-      color: rgba(0,0,0,0.7);
-      text-shadow: none;
-      font-size: 15px;
-    }
   .contact{
     display: flex;
     flex-direction: row;
@@ -150,7 +150,7 @@
     padding-left: 10px;
     padding-right: 10px;
   
-    background-color: #000;
+    background-color: #474747;
     text-align: center;
     border-radius: 20px;
     max-width: 900px;
@@ -161,6 +161,10 @@
 #whats img{
     width: 50px;
     margin-left: 150px;
+}
+.notes{
+  color: red;
+  font-weight: bold;
 }
   </style>
 </head>
@@ -176,7 +180,7 @@
     <div id="etape1">
       <label for="nbMatieres">Nombre de matières :</label>
       <input type="number" id="nbMatieres" min="1" />
-      <button onclick="afficherChampsNomsMatieres()">Suivant</button>
+      <button onclick="afficherChampsNomsMatieres()"><a href="#nbMatieres">Suivant</a></button>
 
     </div>
 
@@ -260,7 +264,7 @@
         zones.innerHTML += `
           <div class="matiere">
             <label>${nom} - nombre de notes :</label>
-            <input type="number" min="1" class="note" onchange="genererNotes(this, ${index})" id="notesMatiere${index}" />
+            <input type="number" min="1" class="notes" onchange="genererNotes(this, ${index})" id="notesMatiere${index}" />
             <div id="zoneNotes${index}" class="zone-notes"></div>
           </div>`;
       });
