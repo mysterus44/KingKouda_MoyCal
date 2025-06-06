@@ -209,6 +209,23 @@
     color: red;
     font-weight: bold;
   }
+    <div id="customAlert" style="
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #f00;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  font-weight: bold;
+  display: none;
+  z-index: 9999;
+">
+  ⚠️ Message d'alerte
+</div>
+
   </style>
 </head>
 <body>
@@ -245,7 +262,16 @@
 
 <script>
 
-  
+  function showAlert(message, duration = 3000) {
+  const alertBox = document.getElementById("customAlert");
+  alertBox.innerText = message;
+  alertBox.style.display = "block";
+
+  setTimeout(() => {
+    alertBox.style.display = "none";
+  }, duration);
+}
+
     // Auto-ajout de la classe .note à chaque input[type=number]
     const observer = new MutationObserver(() => {
       document.querySelectorAll("input").forEach(input => {
@@ -281,7 +307,7 @@ let eleves = [], matieres = [], notes = {};
 function etapeNoms() {
   const nbEleves = +document.getElementById('nbEleves').value;
   const nbMatieres = +document.getElementById('nbMatieres').value;
-  if (!nbEleves || !nbMatieres) return alert("Remplis tous les champs correctement.");
+  if (!nbEleves || !nbMatieres) return showAlert("Remplis tous les champs correctement.");
 
   const zone = document.getElementById("etape2");
   zone.innerHTML = "<h2>Noms des élèves</h2>";
@@ -303,12 +329,12 @@ function genererChampsNotes() {
   eleves = [], matieres = [];
   for (let i = 0; i < nbEleves; i++) {
     const nom = document.getElementById(`eleve${i}`).value.trim();
-    if (!nom) return alert("Tous les noms d'élèves sont requis.");
+    if (!nom) return showAlert("Tous les noms d'élèves sont requis.");
     eleves.push(nom);
   }
   for (let i = 0; i < nbMatieres; i++) {
     const nom = document.getElementById(`matiere${i}`).value.trim();
-    if (!nom) return alert("Tous les noms de matières sont requis.");
+    if (!nom) return showAlert("Tous les noms de matières sont requis.");
     matieres.push(nom);
   }
 
@@ -350,7 +376,7 @@ function partagerResultats() {
       .then(() => console.log("Partage réussi"))
       .catch((error) => console.error("Erreur de partage :", error));
   } else {
-    alert("La fonction de partage n’est pas disponible sur ce navigateur.");
+    showAlert("La fonction de partage n’est pas disponible sur ce navigateur.");
   }
 }
 
@@ -406,7 +432,7 @@ function calculerMoyennes() {
       let total = 0;
       for (let i = 0; i < nb; i++) {
         const val = parseFloat(document.getElementById(`note_${eleve}_${matiere}_${i}`).value);
-        if (isNaN(val)) return alert(`Note manquante pour ${eleve} en ${matiere}`);
+        if (isNaN(val)) return showAlert(`Note manquante pour ${eleve} en ${matiere}`);
         total += val;
       }
       const moyenne = total / nb;
