@@ -192,8 +192,34 @@
     <div id="resultat" class="resultat" style="display:none;">
     </div>
   </div>
+<div id="customAlert" style="
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #f00;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  font-weight: bold;
+  display: none;
+  z-index: 9999;
+">
+  ⚠️ Message d'alerte
+</div>
 
   <script>
+function showAlert(message, duration = 3000) {
+  const alertBox = document.getElementById("customAlert");
+  alertBox.innerText = message;
+  alertBox.style.display = "block";
+
+  setTimeout(() => {
+    alertBox.style.display = "none";
+  }, duration);
+}
+
     let nomsMatieres = [];
   
     // Ajout classe "note" dynamiquement
@@ -253,7 +279,7 @@
       const tempNoms = [];
       for (let i = 1; i <= nbMatieres; i++) {
         const nom = document.getElementById(`nomMatiere${i}`)?.value.trim();
-        if (!nom) return alert(`Veuillez entrer le nom de la matière ${i}.`);
+        if (!nom) return showAlert(`Veuillez entrer le nom de la matière ${i}.`);
         tempNoms.push(nom);
       }
       nomsMatieres = tempNoms;
@@ -311,7 +337,7 @@
         });
   
         if (nb === 0) {
-          alert(`Vous devez entrer au moins une note pour la matière ${nomsMatieres[i]}.`);
+          showAlert(`Vous devez entrer au moins une note pour la matière ${nomsMatieres[i]}.`);
           return;
         }
   
@@ -328,9 +354,9 @@
       zoneResultat.style.display = "block";
   
       if (moyenneGenerale < 10) {
-        alert("En dessous de la moyenne.");
+        showAlert("En dessous de la moyenne.");
       } else {
-        alert("Bravo !!! Vous avez la moyenne !");
+        showAlert("Bravo !!! Vous avez la moyenne !");
       }
     }
   
